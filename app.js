@@ -1,11 +1,11 @@
 // // npm packages
 const inquirer = require('inquirer');
 const { TimeoutError } = require('rxjs');
-  // // npm modules
-// const fs = require('fs');
+  // npm modules
+const fs = require('fs');
 
-// // project modules
-// const generatePage = require('./src/page-template.js');
+// project modules
+const generatePage = require('./src/page-template');
 
 promptUser = () => {
   return inquirer.prompt([
@@ -138,8 +138,12 @@ promptUser = () => {
   promptUser()
   .then(promptProject)
   .then(portfolioData => {
-    console.log(portfolioData);
-  });
+      const pageHTML = generatePage(portfolioData);
+    fs.writeFile('./index.html', pageHTML, err => {
+        if (err) throw new Error(err);
+      console.log('Page created! Check out index.html in this directory to see it!');
+      });
+    });
 
 // // variable for this file
 // const pageHTML = generatePage(name, github);
